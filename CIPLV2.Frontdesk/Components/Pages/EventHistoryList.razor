@@ -1,0 +1,73 @@
+﻿@page "/eventhistory/{EventName}"
+@using CIPLV2.Models.EventHistories;
+@rendermode InteractiveServer
+
+<h3 class="custom-heading">Chatbot Analytics - @EventName</h3>
+<a class="btn botn btn-secondary" href="/summary"><i class="fa fa-solid fa-backward" style="margin-right:10px;"></i>Back To Analytics Summary</a>
+<hr class="style2" />
+
+<style>
+	hr.style2 {
+		border-top: 3px double #8c8b8b;
+	}
+
+	.bot {
+		margin-bottom: 10px;
+		/* justify-content: end; */
+		/* justify-items: flex-end; */
+		/* justify-self: end; */
+		/* position: absolute; */
+
+		position: relative;
+		left: 96%;
+	}
+
+	.botn {
+		margin-top: -74px;
+		/* justify-content: end; */
+		/* justify-items: flex-end; */
+		/* justify-self: end; */
+		/* position: absolute; */
+
+		position: relative;
+		left: 77%;
+	}
+</style>
+
+<RadzenCard Variant="@variant" Class="rz-my-12 rz-mx-auto" Style="max-width: 100%; margin-top:0px !important;">
+
+	<button class="btn bot btn-outline-secondary" @onclick=@DownloadCsvEvent><i class=" fa fa-solid fa-download"></i></button>
+
+
+	<RadzenDataGrid Data="_eventHistory" AllowPaging="true" PageSize="10" AllowSorting="true"
+					TItem="EventHistoryDtoNew" class="custom-datagrid"
+					AllowFiltering="true" FilterMode="FilterMode.Advanced"
+					LogicalFilterOperator="LogicalFilterOperator.Or" PageSizeOptions="@pageSizeOptions" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive">
+		<Columns>
+			<RadzenDataGridColumn TItem="EventHistoryDtoNew" Property="Id" Title="Sr.No" Width="80px">
+				<Template Context="ctx">
+					@(_eventHistory.ToList()?.IndexOf(ctx) + 1)
+				</Template>
+			</RadzenDataGridColumn>
+			<RadzenDataGridColumn TItem="EventHistoryDtoNew" Property="SystemId" Title="SystemId" Width="100px" />
+			<RadzenDataGridColumn TItem="EventHistoryDtoNew" Property="EventDate" Title="EventDate" Width="100px">
+				<Template Context="_event">
+					@if (_event.EventDate == null)
+					{
+						<span>-</span>
+					}
+					else
+					{
+						@Convert.ToDateTime(_event.EventDate).ToString("dd/MM/yyyy")
+					}
+				</Template>
+			</RadzenDataGridColumn>
+
+
+		</Columns>
+	</RadzenDataGrid>
+
+
+</RadzenCard>
+
+

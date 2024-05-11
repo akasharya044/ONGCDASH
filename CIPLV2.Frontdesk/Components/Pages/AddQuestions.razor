@@ -1,0 +1,68 @@
+﻿@page "/addquestion"
+@rendermode InteractiveServer
+@inject IJSRuntime JSRuntime
+@using CIPLV2.Models.SubCategory
+
+
+<RadzenDialog @rendermode="RenderMode.InteractiveServer"></RadzenDialog>
+<RadzenNotification @rendermode="RenderMode.InteractiveServer"></RadzenNotification>
+
+<div class="bg-white ps-4 pt-2 " style="height: 50px;">
+	<h5 class="fw-bold  d-inline header-content">Add Question</h5>
+	<span><a href="/questionslanding"><RadzenButton class="float-end primary-btns" Icon="arrow_circle_left" Text="Back to list" /></a></span>
+
+</div>
+<RadzenCard>
+
+	<RadzenTemplateForm TItem="QuestionDto" Data=@questiondto InvalidSubmit="OnInvalidSubmit" Submit="@UpsertData">
+		<div class="card-body mt-3">
+			<RadzenRow>
+				<RadzenColumn Size="12" SizeMD="6">
+					<div class="form-group mt-2">
+						<RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H2" class="d-flex  form-element-header">Catagory<span style="color:red">*</span></RadzenText>
+						<RadzenDropDown id="categoryId" Name="categoryId" @bind-Value=@questiondto.categoryId Change="@(()  =>SubCategoriesData(questiondto.categoryId ))" Data=@_categories TextProperty="displaylabel" ValueProperty="MfCatId" AllowClear=true Placeholder="Select Catagory" Style="width: 70%;" class="mss-content" />
+						<RadzenRequiredValidator Component="categoryId" Text="category is required." Popup="false" />
+
+					</div>
+				</RadzenColumn>
+
+				<RadzenColumn Size="12" SizeMD="6">
+					<div class="form-group mt-2">
+						<RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H2" class="d-flex  form-element-header">SubCatagory<span style="color:red">*</span></RadzenText>
+						<RadzenDropDown id="subCategoryId" Name="subCategoryId" @bind-Value=@questiondto.subCategoryId Data=@_subCategories Change="@(()  =>AreaData(questiondto.categoryId ,questiondto.subCategoryId))" TextProperty="displaylabel" ValueProperty="MfSubCatId" Placeholder="Select SubCatagory" AllowClear=true Style="width: 100%; max-width: 400px;" />
+						<RadzenRequiredValidator Component="subCategoryId" Text="subCategory is required." Popup="false" />
+					</div>
+				</RadzenColumn>
+
+				<RadzenColumn Size="12" SizeMD="6">
+					<div class="form-group mt-2">
+						<RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H2" class="d-flex  form-element-header">Area<span style="color:red">*</span></RadzenText>
+						<RadzenDropDown id="MfAreaId" Name="MfAreaId" @bind-Value=@questiondto.MfAreaId Data=@_arealist TextProperty="displaylabel" ValueProperty="MfAreaId" Placeholder="Select Area" AllowClear=true Style="width: 100%; max-width: 400px;" />
+						<RadzenRequiredValidator Component="MfAreaId" Text="Area is required." Popup="false" />
+					</div>
+				</RadzenColumn>
+				<RadzenColumn Size="12" SizeMD="6">
+					<div class="form-group mt-2">
+						<RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H2" class="d-flex  form-element-header">Question<span style="color:red">*</span></RadzenText>
+						<RadzenTextBox id="Question" Name="Question" @bind-Value=@questiondto.Question Style="width: 70%;" class="mss-content " />
+						<RadzenRequiredValidator Component="Question" Text="Question is required." Popup="false" />
+
+					</div>
+				</RadzenColumn>
+				<RadzenColumn Size="12" SizeMD="6">
+					<div class="form-group mt-2">
+						<RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H2" class="d-flex  form-element-header">Answer<span style="color:red">*</span></RadzenText>
+						<RadzenTextBox id="Answer" Name="Answer" @bind-Value=@questiondto.Answer Style="width: 100%;" class="mss-content " />
+						<RadzenRequiredValidator Component="Answer" Text="Answer is required." Popup="false" />
+					</div>
+				</RadzenColumn>
+			</RadzenRow>
+			<div class="float-end mt-5">
+				<RadzenStack Orientation="Orientation.Horizontal">
+					<RadzenButton style="width: 160px" class="ms-4 me-4 bg-white text-primary primary-btns border border-danger" Click="BackList" Text="Cancel" />
+					<RadzenButton style="width: 160px" class="primary-btns" Text="Save" ButtonType="ButtonType.Submit" />
+				</RadzenStack>
+			</div>
+		</div>
+	</RadzenTemplateForm>
+</RadzenCard>

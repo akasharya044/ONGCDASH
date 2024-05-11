@@ -1,0 +1,49 @@
+﻿@page "/admin"
+@rendermode InteractiveServer
+@inject IJSRuntime JSRuntime
+
+
+<h3>DataSync</h3>
+<hr class="style2" />
+<style>
+    hr.style2 {
+        border-top: 3px double #8c8b8b;
+    }
+</style>
+
+<RadzenDialog @rendermode="RenderMode.InteractiveServer"></RadzenDialog>
+<RadzenNotification @rendermode="RenderMode.InteractiveServer"></RadzenNotification>
+
+@* <div class="butn">
+    <button class="btn bot btn-outline-secondary" @onclick=@SyncUserData>Sync User Details</button>
+</div> *@
+<div class="col-md-12 mt-5" style=" width: 180px;">
+    <button class="btn2 bot btn-outline-secondary" @onclick=@SyncDeviceData>Sync Device Details</button>
+</div>
+<div class="col-md-12 mt-5" style="    height: 0px;
+    width: 180px;
+    position: relative;
+    left: 200px;
+    top: -110.5px;">
+    <button class="btn1 bot btn-outline-secondary" @onclick=@SyncUserData>Sync User Details</button>
+</div>
+<style>
+    .botn {
+        width: 110px !important;
+        height: 0px !important;
+    }
+
+    .butn {
+        text-align: right;
+    }
+
+    .btn2 {
+        padding: 0.375rem 1.75rem;
+        border-radius: 0.25rem;
+    }
+
+    .btn1 {
+        padding: 0.375rem 2.15rem;
+        border-radius: 0.25rem;
+    }
+</style>

@@ -1,0 +1,48 @@
+﻿@page "/csatsetting"
+@using CIPLV2.Models.Tickets;
+@rendermode InteractiveServer
+
+
+<div class="bg-white ps-4 pt-2 " style="height: 50px;">
+	<h5 class="fw-bold  d-inline header-content">CSAT SETTING</h5>
+</div>
+<RadzenDialog @rendermode="RenderMode.InteractiveServer"></RadzenDialog>
+<RadzenNotification @rendermode="RenderMode.InteractiveServer"></RadzenNotification>
+<RadzenCard class="m-4">
+	<RadzenDataGrid @ref="_refcsat" Data="csatsettingdto" TItem="CsatSettingDto"
+					AllowFiltering=true
+					AllowSorting=true
+					FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive">
+		<Columns>
+			<RadzenDataGridColumn Width="25%" TItem="CsatSettingDto" Property="Name" Title="Name" Filterable=false Sortable=true />
+			<RadzenDataGridColumn Width="25%" TItem="CsatSettingDto" Property="FeedbackPopupTime" Title="Duration" Filterable=false Sortable=true>
+				<Template Context="ctx">
+					@if (ctx.IsEdit == true)
+					{
+						<RadzenNumeric ReadOnly="@IsRead" @bind-Value="@ctx.FeedbackPopupTime" Min="0"></RadzenNumeric>
+					}
+					else
+					{
+						@ctx.FeedbackPopupTime
+					}
+				</Template>
+			</RadzenDataGridColumn>
+
+			<RadzenDataGridColumn Width="10px" TItem="CsatSettingDto" Property="IsEdit" Title="Edit" Filterable=false Sortable=true>
+				<Template Context="context">
+					@if (context.IsEdit == false)
+					{
+						<a href="javascript:void(0);" @onclick="@(()=>EditRecord(context))" style="cursor:pointer"><i class="fa fa-pencil fa-2x text-primary me-2"></i></a>
+
+					}
+					else
+					{
+						<a href="javascript:void(0);" @onclick="@(()=>UpsertData(context))" style="cursor:pointer"><i class="fa fa-save fa-2x text-primary me-2"></i></a>
+
+					}
+
+				</Template>
+			</RadzenDataGridColumn>
+		</Columns>
+	</RadzenDataGrid>
+</RadzenCard>

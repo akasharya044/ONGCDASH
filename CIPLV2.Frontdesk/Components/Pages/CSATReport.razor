@@ -1,0 +1,185 @@
+﻿@page "/csatreports"
+@rendermode InteractiveServer
+@inject IJSRuntime JSRuntime
+
+@using CIPLV2.Models.Tickets;
+
+<style>
+
+	.csatsearchbox {
+		display: flex;
+		line-height: 28px;
+		align-items: center;
+		position: relative;
+		max-width: 190px;
+		float: right;
+	}
+
+	.csatinput {
+		width: 100%;
+		height: 35px;
+		line-height: 28px;
+		padding: 0 1rem;
+		padding-left: 2.5rem;
+		border: 2px solid transparent;
+		border-radius: 8px;
+		outline: none;
+		background-color: #f3f3f4;
+		color: #0d0c22;
+		transition: .3s ease;
+		margin-right: 4px;
+	}
+
+		.csatinput::placeholder {
+			color: #9e9ea7;
+		}
+
+		.csatinput:focus, .csatinput:hover {
+			outline: none;
+			border-color: rgba(234,76,137,0.4);
+			background-color: #fff;
+			box-shadow: 0 0 0 3px rgb(234 76 137 / 10%);
+		}
+
+	.bot {
+		margin-bottom: 10px;
+		position: relative;
+		left: 5%;
+	}
+
+	.loader {
+		border: 12px solid silver;
+		border-top: 12px solid #337AB7;
+		border-radius: 50%;
+		width: 100px;
+		height: 100px;
+		animation: spin 700ms linear infinite;
+		top: 60%;
+		left: 60%;
+		position: absolute;
+		-webkit-animation: spin 2s linear infinite;
+		animation: spin 2s linear infinite;
+	}
+
+	.custom-datagrid {
+		/* Add your custom styles here */
+		font-size: 16px;
+		border: 1px solid #ccc;
+		text-transform: none !important;
+		/* Add more styles as needed */
+	}
+	.custom-datagrid .rz-datagrid {
+		/* Override or add styles specific to the grid */
+		background-color: #f8f8f8;
+			text-transform: none !important;
+			/* Add more styles as needed */
+	}
+
+	.custom-datagrid .rz-header {
+		/* Styles for the header row */
+		background-color: #333;
+		color: white;
+		text-transform: none!important;
+		/* Add more styles as needed */
+	}
+	hr.style2 {
+		border-top: 3px double #8c8b8b;
+	}
+
+</style>
+
+<RadzenDialog @rendermode="RenderMode.InteractiveServer"></RadzenDialog>
+<RadzenNotification @rendermode="RenderMode.InteractiveServer"></RadzenNotification>
+
+<div class="rz-p-2 rz-text-align-center">
+	<RadzenLabel Text="From" Component="RadzenDatePickerBindValue" Style="margin-right: 8px; vertical-align: middle;" />
+	<RadzenDatePicker @bind-Value=@date1 Placeholder="Select Date" Name="RadzenDatePickerBindValue" ShowCalendarWeek />
+
+	<RadzenLabel Text="To" Component="RadzenDatePickerBindValue" Style="margin-right: 8px; vertical-align: middle;" />
+	<RadzenDatePicker @bind-Value=@date2 Name="RadzenDatePickerBindValue"  Placeholder="Select Date" ShowCalendarWeek />
+	<RadzenButton Shade="Shade.Darker" Click=@(args => OnClick()) Text="Go" ButtonStyle="ButtonStyle.Info" />
+	<RadzenButton Shade="Shade.Darker" Click=@(args => CleanDateRange()) Text="Clear" ButtonStyle="ButtonStyle.Info" />
+
+</div>
+
+
+
+<RadzenCard Variant="@variant" Class="rz-my-12 rz-mx-auto" Style="max-width: 900px; margin-top:0px !important;">
+	<RadzenRow>
+<RadzenColumn Size="12" SizeMD="11">
+			<h3 class="custom-heading">Incident Ticket Feedback</h3>
+
+</RadzenColumn>
+<RadzenColumn Size="12" SizeMD="1">
+			<RadzenButton class=" fa fa-solid fa-download" Click="@DownloadCsv" Style="width: 50px;border: 1px solid ;height:10px;margin-bottom:4px"></RadzenButton>
+ 
+    </RadzenColumn>
+</RadzenRow>
+
+	<div class="loader" hidden="@(loading?false:true)"></div>
+
+
+	<RadzenDataGrid Data="ticketData" AllowPaging="true" PageSize="10" AllowSorting="true" TItem="TicketRecord" class="custom-datagrid"
+					AllowFiltering="true" FilterMode="FilterMode.Advanced"
+					PagerHorizontalAlign="HorizontalAlign.Left"
+					LogicalFilterOperator="LogicalFilterOperator.Or" AllowColumnResize="true" ShowPagingSummary="true"
+					PageSizeOptions="@pageSizeOptions" @ref="grid" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive">
+
+
+		<Columns>
+			<RadzenDataGridColumn TItem="TicketRecord" Property="Id" Filterable="false" Title="Sr.No" Width="50px" TextAlign="TextAlign.Center">
+				<Template Context="ctx">
+					@(ticketData.ToList()?.IndexOf(ctx) + 1)
+				</Template>
+			</RadzenDataGridColumn>
+			<RadzenDataGridColumn TItem="TicketRecord" Property="TicketId" Title="Incident Id " Width="180px" />
+			<RadzenDataGridColumn TItem="TicketRecord" Property="Description" Title="Subject" Width="180px" />
+			<RadzenDataGridColumn TItem="TicketRecord" Property="SystemId" Title="HostName" Width="180px" />
+			<RadzenDataGridColumn TItem="TicketRecord" Property="Priority" Title="Priority" Width="180px" />
+			<RadzenDataGridColumn TItem="TicketRecord" Property="ExpertAssigneeName" Title="Engineer Name " Width="180px" />
+			<RadzenDataGridColumn TItem="TicketRecord" Property="CurrentStatus_c" Title="Status" Width="180px" />
+			<RadzenDataGridColumn TItem="TicketRecord" Property="ResolvedDateTime" Title="Resolution Date" Width="180px">
+				<Template Context="ticketData">
+					@if (ticketData.ResolvedDateTime == null || ticketData.ResolvedDateTime=="")
+					{
+						<span>-</span>
+					}
+					else
+					{
+						if(ticketData.ResolvedDateTime.Length>10){
+							@DateTimeOffset.FromUnixTimeMilliseconds(Convert.ToInt64(ticketData.ResolvedDateTime)).DateTime.ToString("dd/MM/yyyy")
+							
+						}
+						else
+						{
+							@DateTimeOffset.FromUnixTimeSeconds(Convert.ToInt64(ticketData.ResolvedDateTime)).DateTime.ToString("dd/MM/yyyy")
+
+						}
+					}
+
+				</Template>
+			</RadzenDataGridColumn>
+			@* <RadzenDataGridColumn TItem="TicketRecord" Property="Region" Title="Region" Width="180px" /> *@
+			<RadzenDataGridColumn TItem="TicketRecord" Property="RegisteredForLocation" Title="Location" Width="180px" />
+			<RadzenDataGridColumn TItem="TicketRecord" Property="feedback_comment" Title="Feedback Comment" Width="180px" />
+			<RadzenDataGridColumn TItem="TicketRecord" Property="starcount" Title="Rating" Width="180px" />
+			<RadzenDataGridColumn TItem="TicketRecord" Property="FeedbackCount" Title="Close Count" Width="180px" />
+			<RadzenDataGridColumn TItem="TicketRecord" Property="LastUpdateTime" Title="Upload At" Width="180px">
+				<Template Context="ticketData">
+					@if (ticketData.LastUpdateTime == null)
+					{
+						<span>-</span>
+					}
+					else
+					{
+						@Convert.ToDateTime(ticketData.LastUpdateTime).ToString("dd/MM/yyyy")
+					}
+				</Template>
+			</RadzenDataGridColumn>
+
+		</Columns>
+	</RadzenDataGrid>
+</RadzenCard>
+
+
+

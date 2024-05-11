@@ -1,0 +1,117 @@
+﻿@page "/subcategory"
+@using CIPLV2.Models.SubCategory
+@rendermode InteractiveServer
+
+
+
+<RadzenDialog @rendermode="RenderMode.InteractiveServer"></RadzenDialog>
+<RadzenNotification @rendermode="RenderMode.InteractiveServer"></RadzenNotification>
+
+@* 
+<h3 class="custom-heading">SubCategories</h3>
+<hr class="style2" /> *@
+<RadzenCard Variant="@variant" Class="rz-my-12 rz-mx-auto" Style="max-width: 100%; margin-top:0px !important;">
+
+    @* <div class="butn ">
+        <button class="btn bot btn-outline-secondary" @onclick=@DownloadCsv><i class=" fa fa-solid fa-download"></i></button>
+
+        <InputFile class="botn" OnChange="OnChange" id="upload" style="display:none" accept=".xls, .xlsx" />
+        <button class="btn bot btn-outline-secondary" @onclick="OpenFilePicker"><i class=" fa fa-solid fa-upload"></i></button>
+    </div> *@
+    <div class="col-12">
+        <h3 style="margin-bottom:-2.5rem;" class="custom-heading">SubCategories</h3>
+        <button class="btn bot btn-outline-secondary" @onclick=@DownloadCsv><i class=" fa fa-solid fa-download"></i>CSV</button>
+        <InputFile class="botn" OnChange="OnChange" id="upload" style="display:none" accept=".xls, .xlsx" />
+        <button class="btn bot btn-outline-secondary" @onclick="OpenFilePicker"><i class=" fa fa-solid fa-upload"></i>Upload</button>
+
+
+    </div>
+    <br />
+
+    <div class="loader" hidden="@(loading?false:true)"></div>
+
+    <RadzenDataGrid Data="_subcategories" AllowPaging="true" PageSize="10" AllowSorting="true" TItem="SubCategoriesDto" class="custom-datagrid"
+                    AllowFiltering="true" FilterMode="FilterMode.Advanced"
+                    PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true"
+                    LogicalFilterOperator="LogicalFilterOperator.Or" PageSizeOptions="@pageSizeOptions" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive">
+        <Columns>
+            <RadzenDataGridColumn Width="50px" TItem="SubCategoriesDto" Property="Sno" Title="Sr.No" Filterable=false Sortable=true>
+                <Template Context="ctx">
+                    @(_subcategories.ToList()?.IndexOf(ctx) + 1)
+                </Template>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="SubCategoriesDto" Property="entitytype" Title="Entity Type" Width="100px" />
+            <RadzenDataGridColumn TItem="SubCategoriesDto" Property="displaylabel" Title="Display Label" Width="100px" />
+            <RadzenDataGridColumn TItem="SubCategoriesDto" Property="phaseid" Title="Phase Id" Width="100px" />
+            <RadzenDataGridColumn TItem="SubCategoriesDto" Property="category_c" Title="Category" Width="100px" />
+            <RadzenDataGridColumn TItem="SubCategoriesDto" Property="impmcategory_c" Title="Imp Category" Width="100px" />
+        </Columns>
+    </RadzenDataGrid>
+</RadzenCard>
+
+<script>
+    window.openFilePicker = function (id) {
+        document.getElementById(id).click();
+    }
+</script>
+<style>
+
+    hr.style2 {
+        border-top: 3px double #8c8b8b;
+    }
+
+    h3 {
+        color: black;
+        font-family: 'Kalnia', serif !important;
+        font-size: 44px;
+    }
+
+    /* .botn {
+        width: 110px !important;
+        height: 0px !important;
+    }
+
+    .butn {
+        text-align: right;
+    } */
+    .bot {
+        margin-bottom: 10px;
+        /* justify-content: end; */
+        /* justify-items: flex-end; */
+        /* justify-self: end; */
+        /* position: absolute; */
+
+        position: relative;
+        left: 85%;
+    }
+
+
+    #upload {
+        border-style: solid;
+        border-color: red !important;
+    }
+
+    .custom-datagrid {
+        /* Add your custom styles here */
+        font-size: 16px;
+        border: 1px solid #ccc;
+        /* Add more styles as needed */
+    }
+
+        .custom-datagrid .rz-datagrid {
+            /* Override or add styles specific to the grid */
+            background-color: #f8f8f8;
+            /* Add more styles as needed */
+        }
+
+        .custom-datagrid .rz-header {
+            /* Styles for the header row */
+            background-color: #333;
+            color: white;
+            /* Add more styles as needed */
+        }
+
+    .hey {
+        color: red !important;
+    }
+</style>

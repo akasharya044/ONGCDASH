@@ -1,0 +1,70 @@
+﻿@page "/summary"
+@using CIPLV2.Models.EventHistories;
+@rendermode InteractiveServer
+
+
+
+
+@* <button class="btn bot btn-outline-secondary" @onclick=@DownloadCsvEvent><i class=" fa fa-solid fa-download"></i></button> *@
+
+<style>
+	hr.style2 {
+		border-top: 3px double #8c8b8b;
+	}
+
+	.bot {
+		margin-bottom: 10px;
+		position: relative;
+		left: 96%;
+	}
+
+</style>
+@* 
+<h3 class="custom-heading">Chatbot Analytics Summary</h3>
+<hr class="style2" /> *@
+@* <div class="col-12">
+	<h3 style="margin-bottom:-2.5rem;" class="custom-heading">SelfHeal Analytics Summary</h3>
+	<button class="btn bot btn-outline-secondary" @onclick=@DownloadCsvEvent><i class=" fa fa-solid fa-download"></i></button>
+
+
+</div>
+<hr class="style2" /> *@
+<RadzenCard Variant="@variant" Class="rz-my-12 rz-mx-auto" Style="max-width: 100%">
+	<div class="loader" hidden="@(loading?false:true)"></div>
+	@* <RadzenColumn Size="12" SizeMD="11"> *@
+		@* <h3 class="custom-heading">SelfHeal Analytics Summary</h3> 
+
+</RadzenColumn>
+@* <RadzenColumn Size="12" SizeMD="1">
+		<RadzenButton class=" fa fa-solid fa-download" Click="@DownloadCsvEvent" Style="width: 50px;border: 1px solid ;height:10px;margin-bottom:4px"></RadzenButton>
+ 
+    </RadzenColumn> *@
+	<div class="col-12">
+		<h3 style="margin-bottom:-2.5rem;" class="custom-heading">SelfHeal Analytics Summary</h3>
+		<button class="btn bot btn-outline-secondary" @onclick=@DownloadCsvEvent><i class=" fa fa-solid fa-download"></i></button>
+
+
+	</div>
+	<RadzenDataGrid Data="_event" AllowPaging="true" PageSize="10" AllowSorting="true"
+					TItem="EventHistoryDto" class="custom-datagrid"
+					AllowFiltering="true" FilterMode="FilterMode.Advanced"
+					PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true"
+					LogicalFilterOperator="LogicalFilterOperator.Or" PageSizeOptions="@pageSizeOptions" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive">
+		<Columns>
+			<RadzenDataGridColumn TItem="EventHistoryDto" Property="Id" Title="Sr.No" Width="20px">
+				<Template Context="ctx">
+					@(_event.ToList()?.IndexOf(ctx) + 1)
+				</Template>
+			</RadzenDataGridColumn>
+			<RadzenDataGridColumn TItem="EventHistoryDto" Property="Event" Title="Event Name" Width="100px" />
+			<RadzenDataGridColumn TItem="EventHistoryDto" Title="Count" Property="Count" Width="100px" TextAlign="TextAlign.Center" />
+
+			<RadzenDataGridColumn TItem="EventHistoryDto" Property="" Title="View" Width="100px" TextAlign="TextAlign.Center">
+				<Template Context="context">
+					<a @onclick="@(args=>ShowEvenList(context.Event))" class="text-decoration-none  fw-bold" style="cursor:pointer"><i class="fa fa-eye" aria-hidden="true"></i>View</a>
+				</Template>
+			</RadzenDataGridColumn>
+
+		</Columns>
+	</RadzenDataGrid>
+</RadzenCard>

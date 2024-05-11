@@ -1,0 +1,194 @@
+﻿@page "/csatupload"
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime
+@inject DialogService DialogService
+@rendermode InteractiveServer
+
+@using CIPLV2.Frontdesk.Components.Pages
+
+<style>
+
+
+	.container {
+		position: relative;
+		display: flex;
+		justify-content: space-between;
+	}
+
+	h5 {
+		color: grey;
+		display: inline-block;
+		margin-right: 10px;
+	}
+
+	h4 {
+		color: green;
+		display: inline-block;
+		margin-right: 10px;
+	}
+
+
+	.corner-box {
+		background-color: #f0f0f0;
+		padding: 5px;
+		border: 1px solid #ccc;
+		border-radius: 3px;
+		margin-left: 5px;
+	}
+
+
+	.plus-sign {
+		font-size: 14px;
+		font-weight: bold;
+		margin-right: 3px;
+	}
+
+	.below-box {
+		text-align: left;
+		background-color: #e0e0e0;
+		padding: 180px;
+		border: 1px solid #999;
+		border-radius: 5px;
+		margin-top: 50px;
+	}
+
+	.rz-background-color-primary-green {
+		background-color: lightgreen;
+	}
+
+	.second-card-container {
+		margin-top: 100px;
+	}
+
+	.container-wrap {
+		display: flex;
+		justify-content: flex-end;
+	}
+
+	.csatup {
+		font-family: Calibri;
+		font-size: 24px;
+		color: #4d9ed5;
+		
+	}
+
+	.notification-container {
+		position: fixed;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		z-index: 1000;
+	}
+	
+</style>
+<script>
+	window.openFilePicker = function (id) {
+		document.getElementById(id).click();
+	}
+</script>
+<div class="container">
+	<h5>Solution Management (ONGC)</h5>
+
+
+</div>
+<RadzenDialog @rendermode="RenderMode.InteractiveServer"></RadzenDialog>
+<div class="notification-container">
+	<RadzenNotification @rendermode="RenderMode.InteractiveServer"></RadzenNotification>
+</div>
+<RadzenCard Variant="@variant" Class="rz-my-12 rz-mx-auto" Style="max-width: 100%; height:400px;">
+
+	<div class="header-content">
+		<div class="left-content">
+			<span class="csatup"><i class=" fa fa-solid fa-upload"></i> UPLOAD CSAT DATA</span>
+		</div>
+		<div class="right-content">
+			<div class="download-box">
+				<a href="/Assets/sample-sheet.xlsx" download="sample_sheet.xlsx">
+					<RadzenButton Style="background-color:#4d9ed5;">
+
+						<RadzenIcon Icon="download" />
+					</RadzenButton>
+				</a>
+			</div>
+		</div>
+	</div>
+	<RadzenCard Class="rz-my-12 rz-mx-auto" Style="max-width: 800px; height: 70px; margin-top: 100px; background-color:#4d9ed5;">
+		<RadzenRow RowGap="0">
+			<RadzenColumn SizeSM="12">
+				<RadzenText Text="Excel file must follow below format:" Style="color: white; font-weight: bold;" />
+				<RadzenText Text="[Incident Id, Severity, Subject, Location, Region, User Name, System ID, Engineer Name, Status, Resolution Date]" Style="color:white;" />
+			</RadzenColumn>
+		</RadzenRow>
+	</RadzenCard>
+
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+
+
+	<div style="text-align: center; margin-top: -180px;">
+		@* <p style="/* display: inline-block; */margin-right: 220px;font-size:24px;font-family:Calibri;font-weight:bold;/* margin-bottom: 0px; */position: relative;top: 38px;">Upload:</p> *@
+		<RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Wrap="FlexWrap.Wrap" class="but justify-content-end" Style="text-align:left;">
+			<InputFile OnChange="OnChange" id="upload" style="display:none" accept=".xls, .xlsx" />
+			
+			<button class="btn btn-outline-secondary"  @onclick="OpenFilePicker" style="margin: auto; z-index:1">@(docname!=""?@docname:"Choose File")</button>
+		<br />
+		</RadzenStack>
+		<button class="btn btn-primary" @onclick="uploadFile" style="margin-top: 10px; z-index:1; color: #4d9ed5">Upload</button>
+
+	</div>
+	<br />
+	<div style="text-align:center; margin-top: 10px;">
+		<div style="background-color: #4d9ed5; padding: 5px; border-radius: 5px; display: inline-block;">
+			<span style="color: white;">NOTE: File must be a XLS or XLSX</span>
+		</div>
+	</div>
+
+</RadzenCard>
+
+
+
+
+
+<style>
+	/* .upload-button {
+		background-color: lightgreen;
+		color: white;
+		padding: 10px;
+		border: none;
+		cursor: pointer;
+	}
+ */
+		.upload-button:hover {
+			background-color: darkgreen;
+		}
+
+	.header-content {
+		display: flex;
+		justify-content: space-between;
+		padding: 10px;
+		border-bottom: 1px solid #ccc;
+	}
+
+	.left-content {
+	}
+
+	.right-content {
+	}
+
+	.download-box {
+		display: flex;
+		align-items: center;
+		cursor: pointer;
+		color: lightseagreen;
+	}
+
+	.download-icon {
+		margin-left: 10px;
+	}
+</style>
+
+

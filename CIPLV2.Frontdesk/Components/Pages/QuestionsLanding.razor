@@ -1,0 +1,61 @@
+﻿@page "/questionslanding"
+@rendermode InteractiveServer
+@inject IJSRuntime JSRuntime
+@using CIPLV2.Models.SubCategory
+
+
+
+<RadzenDialog @rendermode="RenderMode.InteractiveServer"></RadzenDialog>
+<RadzenNotification @rendermode="RenderMode.InteractiveServer"></RadzenNotification>
+
+<RadzenCard Variant="@variant" Class="rz-my-12 rz-mx-auto" Style="max-width: 100%; margin-top:0px !important;">
+
+	<div class="col-12">
+		<h3 style="margin-bottom:-2.5rem;" class="custom-heading">Questions Info</h3>
+		<button class="btn bot btn-outline-secondary" @onclick=@ShowAddQuestion><i class=" fa fa-solid fa-add"></i>Add</button>
+		<button class="btn bot btn-outline-secondary" @onclick="@DownloadExcel"><i class=" fa fa-solid fa-download"></i>Download</button>
+	</div>
+	<br />
+
+	<RadzenDataGrid Data="questiondtolist" AllowPaging="true" PageSize="10" AllowSorting="true" TItem="QuestionDto" class="custom-datagrid"
+					AllowFiltering="true" FilterMode="FilterMode.Advanced"
+					PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true"
+					LogicalFilterOperator="LogicalFilterOperator.Or" PageSizeOptions="@pageSizeOptions" @ref="grid" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive">
+		<Columns>
+			<RadzenDataGridColumn Width="50px" TItem="QuestionDto" Property="Sno" Title="Sr.No" Filterable=false Sortable=true>
+				<Template Context="ctx">
+					@(questiondtolist.ToList()?.IndexOf(ctx) + 1)
+				</Template>
+			</RadzenDataGridColumn>
+			<RadzenDataGridColumn TItem="QuestionDto" Property="category" Title="category" />
+			<RadzenDataGridColumn TItem="QuestionDto" Property="Subcategory" Title="Subcategory" />
+			<RadzenDataGridColumn TItem="QuestionDto" Property="Area" Title="Area" />
+			<RadzenDataGridColumn TItem="QuestionDto" Property="Question" Title="Question" />
+			<RadzenDataGridColumn TItem="QuestionDto" Property="Answer" Title="Answer" />
+		</Columns>
+	</RadzenDataGrid>
+</RadzenCard>
+
+
+
+<style>
+
+	hr.style2 {
+		border-top: 3px double #8c8b8b;
+	}
+
+	h3 {
+		color: black;
+		font-family: 'Kalnia', serif !important;
+		font-size: 44px;
+	}
+
+	.bot {
+		margin-bottom: 10px;
+		position: relative;
+		left: 85%;
+	}
+</style>
+
+
+

@@ -1,0 +1,131 @@
+﻿@page "/area"
+@using CIPLV2.Models.Area
+@rendermode InteractiveServer
+@inject IJSRuntime JSRuntime
+
+
+
+@* <h3 class="custom-heading">Areas</h3>
+<hr class="style2" /> *@
+
+<RadzenDialog @rendermode="RenderMode.InteractiveServer"></RadzenDialog>
+<RadzenNotification @rendermode="RenderMode.InteractiveServer"></RadzenNotification>
+<RadzenCard Variant="@variant" Class="rz-my-12 rz-mx-auto" Style="max-width: 100%; margin-top:0px !important;">
+    @* <div class="butn ">
+        <button class="btn bot btn-outline-secondary" @onclick=@DownloadCsv><i class=" fa fa-solid fa-download"></i></button>
+
+        <InputFile class="botn" OnChange="OnChange" id="upload" style="display:none" accept=".xls, .xlsx" />
+        <button class="btn bot btn-outline-secondary" @onclick="OpenFilePicker"><i class=" fa fa-solid fa-upload"></i></button>
+    </div> *@
+    <div class="col-12">
+        <h3 style="margin-bottom:-2.5rem;" class="custom-heading">Areas</h3>
+        <button class="btn bot btn-outline-secondary" @onclick=@DownloadCsv><i class=" fa fa-solid fa-download"></i>CSV</button>
+        <InputFile class="botn" OnChange="OnChange" id="upload" style="display:none" accept=".xls, .xlsx" />
+        <button class="btn bot btn-outline-secondary" @onclick="OpenFilePicker"><i class=" fa fa-solid fa-upload"></i>Upload</button>
+
+
+    </div>
+    <div class="loader" hidden="@(loading?false:true)"></div>
+    <RadzenDataGrid Data="_area" AllowPaging="true" PageSize="10" AllowSorting="true" TItem="AreaDTO" class="custom-datagrid"
+                    AllowFiltering="true" FilterMode="FilterMode.Advanced"
+                    PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true"
+                    LogicalFilterOperator="LogicalFilterOperator.Or" PageSizeOptions="@pageSizeOptions" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive">
+        <Columns>
+            <RadzenDataGridColumn Width="50px" TItem="AreaDTO" Property="Sno" Title="Sr.No" Filterable=false Sortable=true>
+                <Template Context="ctx">
+                    @(_area.ToList()?.IndexOf(ctx) + 1)
+                </Template>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="AreaDTO" Property="entitytype" Title="Entity Type" Width="100px" />
+            <RadzenDataGridColumn TItem="AreaDTO" Property="displaylabel" Title="Display Label" Width="100px" />
+            <RadzenDataGridColumn TItem="AreaDTO" Property="category_c" Title="Category" Width="100px" />
+            <RadzenDataGridColumn TItem="AreaDTO" Property="subcategory_c" Title="Sub Category" Width="100px" />
+            <RadzenDataGridColumn TItem="AreaDTO" Property="impmcategory_c" Title="Imp Category" Width="100px" />
+        </Columns>
+    </RadzenDataGrid>
+</RadzenCard>
+
+
+
+
+@code {
+
+    Variant variant = Variant.Filled;
+    async Task OpenFilePicker()
+    {
+        // Trigger file input click event
+        await JSRuntime.InvokeVoidAsync("openFilePicker", "upload");
+    }
+}
+
+<script>
+    window.openFilePicker = function (id) {
+        document.getElementById(id).click();
+    }
+</script>
+
+<style>
+
+    hr.style2 {
+        border-top: 3px double #8c8b8b;
+    }
+
+
+
+   /*  .botn {
+        width: 110px !important;
+        height: 0px !important;
+    }
+
+    .butn {
+        text-align: right;
+        padding-bottom: 20px;
+    } */
+
+    .bot {
+        margin-bottom: 10px;
+        /* justify-content: end; */
+        /* justify-items: flex-end; */
+        /* justify-self: end; */
+        /* position: absolute; */
+
+        position: relative;
+        left: 85%;
+    }
+
+
+    .custom-datagrid {
+        /* Add your custom styles here */
+        font-size: 16px;
+        border: 1px solid #ccc;
+        /* Add more styles as needed */
+    }
+
+        .custom-datagrid .rz-datagrid {
+            /* Override or add styles specific to the grid */
+            background-color: #f8f8f8;
+            /* Add more styles as needed */
+        }
+
+        .custom-datagrid .rz-header {
+            /* Styles for the header row */
+            background-color: #333;
+            color: white;
+            /* Add more styles as needed */
+        }
+
+
+    .loader {
+        border: 12px solid silver;
+        border-top: 12px solid #337AB7;
+        border-radius: 50%;
+        width: 100px;
+        height: 100px;
+        animation: spin 700ms linear infinite;
+        top: 60%;
+        left: 60%;
+        position: absolute;
+        -webkit-animation: spin 2s linear infinite;
+        animation: spin 2s linear infinite;
+    }
+</style>

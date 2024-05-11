@@ -1,0 +1,267 @@
+﻿@rendermode InteractiveServer
+<style>
+
+    .fas {
+        position: relative;
+        left: 10%;
+        top: 2px;
+    }
+
+    .fasu {
+        margin-right: 9px;
+        padding-right: 3px;
+    }
+
+    .custom-svg-icon {
+        display: inline-block;
+        width: 10px;
+        height: 16px;
+        color: white !important;
+        background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M137.4 374.6c12.5 12.5 32.8 12.5 45.3 0l128-128c9.2-9.2 11.9-22.9 6.9-34.9s-16.6-19.8-29.6-19.8L32 192c-12.9 0-24.6 7.8-29.6 19.8s-2.2 25.7 6.9 34.9l128 128z"/></svg>') center/contain no-repeat;
+    }
+
+    .navbar-brand {
+        color: white;
+        font-weight: bold !important;
+    }
+
+    .text {
+        font-family: Arial, serif;
+    }
+
+    .texti {
+        font-family: Arial, serif;
+        font-size: 12px !important;
+        width: 200px !important;
+    }
+
+    .sub-menu {
+        display: none;
+    }
+
+    .show-submenu {
+        display: none;
+    }
+
+    .sub-menu.active {
+        display: none;
+    }
+
+    .sub {
+        width: 200px !important;
+    }
+
+    .sube {
+        width: 201px !important;
+    }
+
+    ul {
+        list-style: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    .sub3 {
+        padding-top: 0px !important;
+        padding-bottom: 0px !important;
+    }
+
+    .text-wrap {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 205px;
+        display: inline-block;
+        vertical-align: right;
+        font-size: 11px !important;
+    }
+
+    img {
+        height: 40px;
+        position: relative;
+        bottom: 7px;
+        left: 58px;
+        filter: contrast(1.9);
+    }
+
+
+
+    /* Flaired edges */
+
+    hr.style-one {
+        border: 2px solid;
+        height: 1px;
+        width: 185px;
+        margin-top: 0px;
+        margin-bottom: 0px;
+        color: white;
+    }
+
+</style>
+
+
+<div class="top-row ps-3 navbar ">
+
+    <div class="flex items-center justify-center gap-2 px-1 lg:py-2 py-2">
+        <a class="cursor-point" href="dashboard">
+            <img src="/Assets/logo.png">
+            <hr class="style-one">
+
+
+        </a>
+
+    </div>
+
+
+</div>
+
+
+
+
+
+<input type="checkbox" title="Navigation menu" class="navbar-toggler" />
+
+<div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
+
+
+    <nav class="flex-column">
+        <RadzenPanelMenu Multiple=false>
+            <div class="nav-item ps-2 pe-2">
+                <NavLink class="nav-link text" href="dashboard" Match="NavLinkMatch.All">
+                    <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Dashboard
+                </NavLink>
+            </div>
+
+            <div class="nav-item ps-2 pe-2">
+                <NavLink class="nav-link text" href="system">
+                    <RadzenIcon Icon="account_circle" class="bi" style="font-weight: 800; margin-right: 9px; padding-right: 3px;" />System
+                </NavLink>
+            </div>
+
+            <div class="nav-item ps-2 pe-2">
+                <NavLink class="nav-link text" href="category">
+                    <RadzenIcon Icon="dashboard" class="bi" style="font-weight: 800; margin-right: 9px; padding-right: 3px;" />Categories
+                </NavLink>
+            </div>
+
+            <div class="nav-item ps-2 pe-2">
+                <NavLink class="nav-link text" href="subcategory">
+                    <RadzenIcon Icon="donut_small" class="bi" style="font-weight: 800; margin-right: 9px; padding-right: 3px;" />Sub Categories
+                </NavLink>
+            </div>
+
+            <div class="nav-item ps-2 pe-2">
+                <NavLink class="nav-link text" href="area">
+                    <RadzenIcon Icon="description" class="bi" style="font-weight: 800; margin-right: 9px; padding-right: 3px;" />Areas
+                </NavLink>
+            </div>
+
+
+
+            <div class="nav-item">
+                <ul class="ps-2 pe-2">
+                    <li class="submenu1">
+                        <NavLink class="nav-link text" onclick="toggleSubMenu1('advancedSubMenu1')">
+
+                            <RadzenIcon Icon="extension" class="bi" style="font-weight: 800; margin-right: 9px; padding-right: 3px;" />CSAT <i class="fa fas fa-angle-double-down"></i>
+                        </NavLink>
+                        <ul class="sub-menu ps-2 pe-2" id="advancedSubMenu1">
+                            <li>
+                                <NavLink class="nav-link text sub" href="csatupload">
+                                    <i class=" fa fasu  fa-solid fa-arrow-right"></i> CSAT Update
+                                </NavLink>
+                            </li>
+                            <li>
+                                <NavLink class="nav-link text sub" href="csatreports">
+                                    <i class=" fa fasu  fa-solid fa-arrow-right"></i> CSAT Report
+                                </NavLink>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+
+            <div class="nav-item">
+                <ul class="ps-2 pe-2">
+                    <li class="submenu2">
+                        <NavLink class="nav-link text" onclick="toggleSubMenu2('advancedSubMenu2')">
+                            <RadzenIcon Icon="face" class="bi" style="font-weight: 800; margin-right: 9px; padding-right: 3px;" />SelfHeal <i class="fa fas fa-angle-double-down"></i>
+                        </NavLink>
+                        <ul class="sub-menu ps-2 pe-2" id="advancedSubMenu2">
+                            <li>
+                                @* new sub menu *@
+                                <div class="nav-item sub3">
+                                    <ul class="ps-2 pe-2">
+
+                                        <NavLink class="nav-link text" href="summary">
+                                            <i class=" fa fasu  fa-solid fa-arrow-right"></i> Analytics
+                                        </NavLink>
+                                    </ul>
+                                </div>
+                            </li>
+
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+
+
+            <div class="nav-item ps-2 pe-2">
+                <NavLink class="nav-link text" href="feedback">
+                    <RadzenIcon Icon="feedback" class="bi" style="font-weight: 800; margin-right: 9px; padding-right: 3px;" />FeedBack
+                </NavLink>
+
+            </div>
+
+
+            <div class="nav-item">
+                <ul class="ps-2 pe-2">
+                    <li class="submenu1">
+                        <NavLink class="nav-link text" onclick="toggleSubMenu('advancedSubMenu')">
+
+                            <RadzenIcon Icon="build" class="bi" style="font-weight: 800; margin-right: 9px; padding-right: 3px;" />Admin <i class="fa fas fa-angle-double-down"></i>
+                        </NavLink>
+                        <ul class="sub-menu ps-2 pe-2" id="advancedSubMenu">
+                            <li>
+                                <NavLink class="nav-link text sub" href="admin">
+                                    <i class=" fa fasu  fa-solid fa-arrow-right"></i> Data Sync
+                                </NavLink>
+                            </li>
+                            <li>
+                                <NavLink class="nav-link text sub" href="systemhardware">
+                                    <i class=" fa fasu  fa-solid fa-arrow-right"></i> System Hardware
+                                </NavLink>
+                            </li>
+                            <li>
+                                <NavLink class="nav-link text sub" href="systemsoftware">
+                                    <i class=" fa fasu  fa-solid fa-arrow-right"></i> System Software
+                                </NavLink>
+                            </li>
+                            <li>
+                                <NavLink class="nav-link text sub" href="csatsetting">
+                                    <i class=" fa fasu  fa-solid fa-arrow-right"></i> CSAT Setting
+                                </NavLink>
+                            </li>
+                            <li>
+                                <NavLink class="nav-link text sub" href="questionslanding">
+                                    <i class=" fa fasu  fa-solid fa-arrow-right"></i> Questions
+                                </NavLink>
+                            </li>
+                            <li>
+                                <NavLink class="nav-link text sub" href="systemlog">
+                                    <i class=" fa fasu  fa-solid fa-arrow-right"></i> System Log
+                                </NavLink>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </RadzenPanelMenu>
+
+
+
+
+    </nav>
+</div>
